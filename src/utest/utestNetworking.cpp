@@ -33,19 +33,25 @@
 class NetworkingTest: public tsunit::Test
 {
     TSUNIT_DECLARE_TEST(SystemStructures);
+#if !defined(TS_NO_EXTERNAL_TESTS)
     TSUNIT_DECLARE_TEST(IPv4AddressConstructors);
     TSUNIT_DECLARE_TEST(IPv4Address);
     TSUNIT_DECLARE_TEST(IPv6Address);
+#endif
     TSUNIT_DECLARE_TEST(Conversion);
     TSUNIT_DECLARE_TEST(IPAddressMask);
     TSUNIT_DECLARE_TEST(MACAddress);
     TSUNIT_DECLARE_TEST(LocalHost);
     TSUNIT_DECLARE_TEST(GetLocalIPAddresses);
+#if !defined(TS_NO_EXTERNAL_TESTS)
     TSUNIT_DECLARE_TEST(IPv4SocketAddressConstructors);
+#endif
     TSUNIT_DECLARE_TEST(IPv4SocketAddress);
     TSUNIT_DECLARE_TEST(IPv6SocketAddress);
+#if !defined(TS_NO_EXTERNAL_TESTS)
     TSUNIT_DECLARE_TEST(TCPSocket);
     TSUNIT_DECLARE_TEST(UDPSocket);
+#endif
     TSUNIT_DECLARE_TEST(IPHeader);
     TSUNIT_DECLARE_TEST(IPProtocol);
     TSUNIT_DECLARE_TEST(TCPPacket);
@@ -96,6 +102,7 @@ TSUNIT_DEFINE_TEST(SystemStructures)
             << "NetworkingTest::SystemStructures: sizeof(::sockaddr_storage) = " << sizeof(::sockaddr_storage) << std::endl;
 }
 
+#if !defined(TS_NO_EXTERNAL_TESTS)
 TSUNIT_DEFINE_TEST(IPv4AddressConstructors)
 {
     TSUNIT_ASSERT(ts::IPInitialize());
@@ -272,6 +279,7 @@ TSUNIT_DEFINE_TEST(IPv6Address)
     TSUNIT_EQUAL(u"12.13.14.15", a2.toFullString());
     TSUNIT_EQUAL(0x0C0D0E0F, a2.address4());
 }
+#endif // TS_NO_EXTERNAL_TESTS
 
 TSUNIT_DEFINE_TEST(Conversion)
 {
@@ -437,6 +445,7 @@ TSUNIT_DEFINE_TEST(GetLocalIPAddresses)
     }
 }
 
+#if !defined(TS_NO_EXTERNAL_TESTS)
 TSUNIT_DEFINE_TEST(IPv4SocketAddressConstructors)
 {
     TSUNIT_ASSERT(ts::IPInitialize());
@@ -531,6 +540,7 @@ TSUNIT_DEFINE_TEST(IPv4SocketAddressConstructors)
     TSUNIT_EQUAL(0, a14.address4());
     TSUNIT_EQUAL(0, a14.port());
 }
+#endif // TS_NO_EXTERNAL_TESTS
 
 TSUNIT_DEFINE_TEST(IPv4SocketAddress)
 {
@@ -740,6 +750,7 @@ namespace {
 }
 
 // Test cases
+#if !defined(TS_NO_EXTERNAL_TESTS)
 TSUNIT_DEFINE_TEST(TCPSocket)
 {
     TSUNIT_ASSERT(ts::IPInitialize());
@@ -788,6 +799,7 @@ TSUNIT_DEFINE_TEST(TCPSocket)
 
     CERR.debug(u"TCPSocketTest: main thread: terminated");
 }
+#endif // TS_NO_EXTERNAL_TESTS
 
 // A thread class which sends one UDP message and wait from the same message to be replied.
 namespace {
@@ -849,6 +861,7 @@ namespace {
 }
 
 // Test cases
+#if !defined(TS_NO_EXTERNAL_TESTS)
 TSUNIT_DEFINE_TEST(UDPSocket)
 {
     TSUNIT_ASSERT(ts::IPInitialize());
@@ -882,6 +895,7 @@ TSUNIT_DEFINE_TEST(UDPSocket)
     TSUNIT_ASSERT(sock.send(buffer, size, sender, CERR));
     CERR.debug(u"UDPSocketTest: main thread: reply sent");
 }
+#endif // TS_NO_EXTERNAL_TESTS
 
 TSUNIT_DEFINE_TEST(IPHeader)
 {
