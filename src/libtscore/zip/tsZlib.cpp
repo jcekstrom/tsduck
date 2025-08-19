@@ -45,6 +45,7 @@
     TS_LLVM_NOWARNING(old-style-cast)
     TS_LLVM_NOWARNING(shorten-64-to-32)
     TS_LLVM_NOWARNING(comma)
+    TS_LLVM_NOWARNING(implicit-int-conversion)
     TS_LLVM_NOWARNING(padded)
     TS_LLVM_NOWARNING(sign-conversion)
     TS_LLVM_NOWARNING(sign-compare)

@@ -295,6 +295,10 @@ download-dtapi()
     fi
 }
 
+# When sourced (. or source), exit allowing the caller to used the funtions for other scripts
+# like the nix build for dtapi
+[[ "${BASH_SOURCE[0]}" != "$0" ]] && return
+
 # Get options.
 CMD_ALL=true
 CMD_DOWNLOAD=false
