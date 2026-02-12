@@ -792,9 +792,10 @@ int ts::UDPSocket::receiveOne(void* data,
             const uint64_t* ts = reinterpret_cast<const uint64_t*>(WSA_CMSG_DATA(cmsg));
             if (ts != nullptr && *ts != 0) {
                 // Got a timestamp. Its frequency is returned by QueryPerformanceFrequency().
-                ::LARGE_INTEGER freq;
-                TS_ZERO(freq);
-                if (QueryPerformanceFrequency(&freq) && freq.QuadPart != 0) {
+                // Return the same value all the time, call it once only.
+                static ::LARGE_INTEGER freq = {.QuadPart = 0};
+                static const bool qpf_ok = QueryPerformanceFrequency(&freq) && freq.QuadPart > 0;
+                if (qpf_ok) {
                     *timestamp = cn::microseconds((*ts * 1'000'000) / freq.QuadPart);
                     if (timestamp_type != nullptr) {
                         *timestamp_type = TimeStampType::SOFTWARE;
