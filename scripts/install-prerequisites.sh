@@ -184,14 +184,16 @@ elif [[ "$SYSTEM" == "DragonFly" ]]; then
 
 elif [[ "$SYSTEM" == "OpenBSD" ]]; then
 
+    # Get the package name of the latest version of a package for which several versions exist at the same time.
     disamb_pkg() { pkg_info -Q $1 | grep "^$1-[0-9]" | grep -v -e -static | sort | tail -1 | sed -e 's/ .*//'; }
 
-    PKGLIST+=(git curl zip bash gsed ggrep gmake $(disamb_pkg gtar) dos2unix coreutils $(disamb_pkg python))
-    [[ -z $NOPCSC    ]] && PKGLIST+=(pcsc-lite)
-    [[ -z $NOJAVA    ]] && PKGLIST+=($(disamb_pkg jdk))
-    [[ -z $NODOXYGEN ]] && PKGLIST+=(doxygen graphviz)
-    [[ -z $NODOC     ]] && PKGLIST+=($(disamb_pkg ruby) ruby-shims asciidoctor qpdf)
-    [[ -z $NODOC     ]] && GEMLIST+=(asciidoctor-pdf rouge)
+    PKGLIST+=(git curl zip bash gsed ggrep gmake $(disamb_pkg gtar) dos2unix coreutils base64 $(disamb_pkg python))
+    [[ -z $NOOPENSSL  ]] && PKGLIST+=($(disamb_pkg openssl))
+    [[ -z $NOPCSC     ]] && PKGLIST+=(pcsc-lite)
+    [[ -z $NOJAVA     ]] && PKGLIST+=($(disamb_pkg jdk))
+    [[ -z $NODOXYGEN  ]] && PKGLIST+=(doxygen graphviz)
+    [[ -z $NODOC      ]] && PKGLIST+=($(disamb_pkg ruby) ruby-shims asciidoctor qpdf)
+    [[ -z $NODOC      ]] && GEMLIST+=(asciidoctor-pdf rouge)
 
     echo "Packages: ${PKGLIST[*]}"
     $DRYRUN && exit 0

@@ -662,18 +662,24 @@ TSUNIT_DEFINE_TEST(IsTerminal)
 TSUNIT_DEFINE_TEST(SysInfo)
 {
     debug() << "SysUtilsTest::testSysInfo: " << std::endl
-            << "    arch() = " << int(ts::SysInfo::Instance().arch()) << std::endl
-            << "    os() = " << int(ts::SysInfo::Instance().os()) << std::endl
-            << "    osFlavor() = " << int(ts::SysInfo::Instance().osFlavor()) << std::endl
+            << "    arch = " << int(ts::SysInfo::Instance().arch()) << std::endl
+            << "    os = " << int(ts::SysInfo::Instance().os()) << std::endl
+            << "    osFlavor = " << int(ts::SysInfo::Instance().osFlavor()) << std::endl
+            << "    crcInstructions = " << ts::SysInfo::Instance().crcInstructions() << std::endl
             << "    systemVersion = \"" << ts::SysInfo::Instance().systemVersion() << '"' << std::endl
             << "    systemMajorVersion = " << ts::SysInfo::Instance().systemMajorVersion() << std::endl
+            << "    systemBuild = " << ts::SysInfo::Instance().systemBuild() << std::endl
             << "    systemName = \"" << ts::SysInfo::Instance().systemName() << '"' << std::endl
             << "    hostName = \"" << ts::SysInfo::Instance().hostName() << '"' << std::endl
-            << "    memoryPageSize = " << ts::SysInfo::Instance().memoryPageSize() << std::endl;
+            << "    cpuName = \"" << ts::SysInfo::Instance().cpuName() << '"' << std::endl
+            << "    memoryPageSize = " << ts::SysInfo::Instance().memoryPageSize() << std::endl
+            << "    cpuCoreCount = " << ts::SysInfo::Instance().cpuCoreCount() << std::endl
+            << "    std::thread::hardware_concurrency = " << std::thread::hardware_concurrency() << std::endl;
 
 #if defined(TS_WINDOWS)
     TSUNIT_EQUAL(ts::SysInfo::WINDOWS, ts::SysInfo::Instance().os());
     TSUNIT_EQUAL(ts::SysInfo::NONE, ts::SysInfo::Instance().osFlavor());
+    TSUNIT_ASSERT(ts::SysInfo::Instance().systemBuild() > 0);
 #elif defined(TS_LINUX)
     TSUNIT_EQUAL(ts::SysInfo::LINUX, ts::SysInfo::Instance().os());
 #elif defined(TS_MAC)
@@ -716,6 +722,9 @@ TSUNIT_DEFINE_TEST(SysInfo)
 #elif defined(TS_S390X)
     TSUNIT_EQUAL(ts::SysInfo::S390X, ts::SysInfo::Instance().arch());
 #endif
+
+    // We can't predict the number of CPU cores, except that this must be non-zero.
+    TSUNIT_ASSERT(ts::SysInfo::Instance().cpuCoreCount() > 0);
 
     // We can't predict the memory page size, except that it must be a multiple of 256.
     TSUNIT_ASSERT(ts::SysInfo::Instance().memoryPageSize() > 0);
